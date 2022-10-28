@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DriverService {
-    Optional<Driver> addDriver (Driver driver, Connection connection);
-    void removeDriver (Integer id, Connection connection);
+    Driver addDriver (Driver driver, Connection connection);
+    boolean removeDriver (Integer id, Connection connection);
     Optional<Driver> findDriverById (Integer id, Connection connection);
     List<Driver> findAllDriversBySurname(String surname, Connection connection);
     List <Driver> findAllDrivers(Connection connection);

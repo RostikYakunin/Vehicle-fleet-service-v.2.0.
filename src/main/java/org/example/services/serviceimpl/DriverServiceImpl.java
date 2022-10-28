@@ -24,14 +24,14 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public Optional<Driver> addDriver(Driver driver, Connection connection) {
+    public Driver addDriver(Driver driver, Connection connection) {
         if (driver == null) {
             System.err.println("Invalid input !");
-            return Optional.empty();
+            return null;
         }
 
         driversRepo.add(driver, connection);
-        return Optional.of(driver);
+        return driver;
     }
 
     @Override
@@ -45,19 +45,20 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public void removeDriver(Integer id, Connection connection) {
+    public boolean removeDriver(Integer id, Connection connection) {
         if (driversRepo.getById(id, connection).isEmpty()) {
             System.err.println("Driver with id = " + id + " not found !");
-            return;
+            return false;
         }
 
         if (driversRepo.getById(id, connection).get().getTransport() != null) {
             System.err.println("This driver can`t be deleted, driver is assigned to the vehicle ! " +
                     "You must delete this driver from vehicle and try again !");
-            return;
+            return false;
         }
 
         driversRepo.deleteById(id, connection);
+        return true;
     }
 
     @Override
