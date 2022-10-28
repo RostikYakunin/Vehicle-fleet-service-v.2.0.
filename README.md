@@ -1,4 +1,4 @@
-# Vehicle-fleet-service-v.2.0.SNAPSHOT
+# Vehicle-fleet-service-v.2.0.
 App which imitated work of vehicle fleet service.
 
 ## How it work
@@ -10,7 +10,7 @@ App has consol menu and dividies into layers which interacts according to the sc
 
 ## Patterns
 
-- Singleton -> data base;
+- Singleton;
 - Repository (DAO);
 - Service.
 
