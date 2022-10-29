@@ -1,14 +1,13 @@
 package org.example.services.serviceimpl;
 
-import net.bytebuddy.asm.Advice;
 import org.example.models.drivers.Driver;
 import org.example.models.drivers.DriverQualificationEnum;
-import org.example.models.transports.Tram;
+import org.example.models.routes.Route;
+import org.example.models.transports.Bus;
 import org.example.models.transports.Transport;
 import org.example.repo.DBConnection.DBConnect;
 import org.example.repo.repoImpl.DriverRepoImpl;
-import org.example.repo.repoInterfaces.DriversRepo;
-import org.example.services.interfaces.DriverService;
+import org.example.repo.repoImpl.TransportRepoImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,12 +18,10 @@ import org.mockito.MockitoAnnotations;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -34,6 +31,9 @@ public class DriverServiceImplTest {
 
     @Mock
     DriverRepoImpl driverRepo;
+
+    @Mock
+    TransportRepoImpl transportRepo;
 
     @InjectMocks
     DriverServiceImpl driverService;
@@ -134,13 +134,51 @@ public class DriverServiceImplTest {
 
     @Test
     public void findAllDriversOnRoute() {
+        //Given
+        Driver testDriver = new Driver(1, "Name", "Surname", "03404040", DriverQualificationEnum.BUS_DRIVER);
+        Route testRoute = new Route(1, "Start", "End");
+        Transport testTransport = new Bus(1, "Mark", 40, DriverQualificationEnum.BUS_DRIVER, "Type", 4);
+
+        testRoute.setTransport(testTransport);
+        testTransport.setDriver(testDriver);
+        List <Driver> expectedList = List.of(testDriver);
+
+        //When
+        List <Driver> actualList = driverService.findAllDriversOnRoute(testRoute, connection);
+
+        //Then
+        assertEquals(expectedList,actualList);
     }
 
     @Test
     public void findAllTransportsWithoutDriver() {
+        //Given
+        ArgumentCaptor<Connection> connectionArgumentCaptor = ArgumentCaptor.forClass(Connection.class);
+        Transport testTransport = new Bus(1, "Mark", 40, DriverQualificationEnum.BUS_DRIVER, "Type", 4);
+        List <Transport> expectedList = List.of(testTransport);
+
+        //When
+        when(transportRepo.getAll(any(Connection.class))).thenReturn(expectedList);
+        List <Transport> actualList = transportRepo.getAll(connection);
+
+        //Then
+        assertEquals(expectedList, actualList);
+        verify(transportRepo, times(1)).getAll(connectionArgumentCaptor.capture());
     }
 
     @Test
     public void addDriverOnTransport() {
+        //Given
+        ArgumentCaptor<Connection> connectionArgumentCaptor = ArgumentCaptor.forClass(Connection.class);
+
+        Driver testDriver = new Driver(1, "Name", "Surname", "03404040", DriverQualificationEnum.BUS_DRIVER);
+        Transport testTransport = new Bus(1, "Mark", 40, DriverQualificationEnum.BUS_DRIVER, "Type", 4);
+        boolean expectedResult = true;
+
+        //When
+        boolean actualResult = driverService.addDriverOnTransport(testDriver, testTransport, connection);
+
+        //Then
+        assertEquals(expectedResult, actualResult);
     }
 }
