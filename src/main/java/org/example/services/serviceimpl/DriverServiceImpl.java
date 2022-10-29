@@ -126,19 +126,19 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public Optional<Transport> addDriverOnTransport(Driver driver, Transport transport, Connection connection) {
+    public boolean addDriverOnTransport(Driver driver, Transport transport, Connection connection) {
 
         if (driver == null || transport == null) {
             System.err.println("Driver or transport not found !");
-            return Optional.empty();
+            return false;
         }
 
         if (!driver.getQualificationEnum().equals(transport.getDriverQualificationEnum())) {
             System.err.println("Error ! Driver`s and transport`s qualification not equal");
-
+            return false;
         }
 
         transport.setDriver(driver);
-        return Optional.of(transport);
+        return true;
     }
 }

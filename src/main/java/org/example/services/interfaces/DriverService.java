@@ -17,7 +17,7 @@ public interface DriverService {
     List <Driver> findAllDrivers(Connection connection);
     List<Driver> findAllDriversOnRoute(Route route, Connection connection);
     List <Transport> findAllTransportsWithoutDriver(Connection connection);
-    Optional<Transport> addDriverOnTransport (Driver driver, Transport transport, Connection connection);
+   boolean addDriverOnTransport (Driver driver, Transport transport, Connection connection);
 
 
 }
