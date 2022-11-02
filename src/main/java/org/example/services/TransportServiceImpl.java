@@ -1,4 +1,4 @@
-package org.example.services.serviceimpl;
+package org.example.services;
 
 
 import org.example.models.routes.Route;
@@ -41,18 +41,19 @@ public class TransportServiceImpl implements TransportService {
     }
 
     @Override
-    public void removeTransport(Integer id, Connection connection) {
+    public boolean removeTransport(Integer id, Connection connection) {
         if (transportRepo.getById(id, connection).isEmpty()) {
             System.err.println("Transport with id = " + id + " not found !");
-            return;
+            return false;
         }
 
         if (transportRepo.getById(id, connection).get().getDriver() != null) {
             System.err.println("This transport can`t be deleted, transport is assigned by driver ! ");
-            return;
+            return false;
         }
 
         transportRepo.deleteById(id, connection);
+        return true;
     }
 
     @Override
@@ -61,12 +62,12 @@ public class TransportServiceImpl implements TransportService {
     }
 
     @Override
-    public Optional<List<Transport>> findTransportByBrand(String brand, Connection connection) {
+    public List<Transport> findTransportByBrand(String brand, Connection connection) {
         List<Transport> tempList = new ArrayList<>();
 
         if (brand == null) {
             System.err.println("Invalid input !");
-            return Optional.empty();
+            return null;
         }
 
         for (Transport tr : transportRepo.getAll(connection)) {
@@ -79,24 +80,24 @@ public class TransportServiceImpl implements TransportService {
             System.err.println("Input brand doesn`t exist !");
         }
 
-        return Optional.of(tempList);
+        return tempList;
     }
 
     @Override
-    public Optional<Route> addTransportToRoute(Transport transport, Route route, Connection connection) {
+    public boolean addTransportToRoute(Transport transport, Route route, Connection connection) {
 
         if (transport == null || route == null) {
             System.err.println("Route or transport not found !");
-            return Optional.empty();
+            return false;
         }
 
         if (transport.getDriver() == null || transport.getRoute() != null) {
             System.err.println("Transport doesn`t have driver or transport has assigned on other route !");
-            return Optional.empty();
+            return false;
         }
 
         route.setTransport(transport);
-        return Optional.of(route);
+        return true;
     }
 
     @Override
@@ -113,17 +114,18 @@ public class TransportServiceImpl implements TransportService {
     }
 
     @Override
-    public void removeTransportFromRoute(Transport transport, Route route, Connection connection) {
+    public boolean removeTransportFromRoute(Transport transport, Route route, Connection connection) {
         if (transport == null && route == null) {
             System.err.println("Input transport or route not found !");
-            return;
+            return false;
         }
 
         if (route.getTransport() == null) {
             System.err.println("There are no transports for deletion on this route !");
-            return;
+            return false;
         }
 
         route.setTransport(null);
+        return true;
     }
 }

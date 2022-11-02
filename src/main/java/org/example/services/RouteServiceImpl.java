@@ -1,4 +1,4 @@
-package org.example.services.serviceimpl;
+package org.example.services;
 
 
 import org.example.models.routes.Route;
@@ -40,18 +40,19 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public void removeRoute(Integer id, Connection connection) {
+    public boolean removeRoute(Integer id, Connection connection) {
         if (routeRepo.getById(id, connection).isEmpty()) {
             System.err.println("Route with id = " + id + " not found !");
-            return;
+            return false;
         }
 
         if (routeRepo.getById(id, connection).get().getTransport() != null) {
             System.err.println("This route can`t be deleted, route is assigned to the vehicle ! ");
-            return;
+            return false;
         }
 
         routeRepo.deleteById(id, connection);
+        return true;
     }
 
     @Override

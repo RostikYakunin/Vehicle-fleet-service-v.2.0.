@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface RouteService {
 
     Optional<Route> addRoute(Route route, Connection connection);
-    void removeRoute (Integer id, Connection connection);
+    boolean removeRoute (Integer id, Connection connection);
     Optional<Route> findRouteById (Integer id, Connection connection);
     List <Route> findAllRoutes (Connection connection);
     List <Route> findAllRoutesWithoutTransport (Connection connection);
