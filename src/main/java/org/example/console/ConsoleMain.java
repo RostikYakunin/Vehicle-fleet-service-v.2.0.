@@ -9,9 +9,9 @@ import org.example.repo.repoInterfaces.TransportRepo;
 import org.example.services.interfaces.DriverService;
 import org.example.services.interfaces.RouteService;
 import org.example.services.interfaces.TransportService;
-import org.example.services.DriverServiceImpl;
-import org.example.services.RouteServiceImpl;
-import org.example.services.TransportServiceImpl;
+import org.example.services.serviceImpl.DriverServiceImpl;
+import org.example.services.serviceImpl.RouteServiceImpl;
+import org.example.services.serviceImpl.TransportServiceImpl;
 
 import java.sql.Connection;
 import java.util.InputMismatchException;
