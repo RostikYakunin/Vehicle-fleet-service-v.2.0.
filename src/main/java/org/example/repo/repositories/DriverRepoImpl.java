@@ -1,4 +1,4 @@
-package org.example.repo.repoImpl;
+package org.example.repo.repositories;
 
 import org.example.models.drivers.Driver;
 import org.example.models.drivers.DriverQualificationEnum;
