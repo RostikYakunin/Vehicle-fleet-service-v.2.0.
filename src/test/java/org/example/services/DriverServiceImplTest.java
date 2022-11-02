@@ -1,4 +1,4 @@
-package org.example.services.serviceimpl;
+package org.example.services;
 
 import org.example.models.drivers.Driver;
 import org.example.models.drivers.DriverQualificationEnum;
@@ -6,8 +6,8 @@ import org.example.models.routes.Route;
 import org.example.models.transports.Bus;
 import org.example.models.transports.Transport;
 import org.example.repo.DBConnection.DBConnect;
-import org.example.repo.repoImpl.DriverRepoImpl;
-import org.example.repo.repoImpl.TransportRepoImpl;
+import org.example.repo.repositories.DriverRepoImpl;
+import org.example.repo.repositories.TransportRepoImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -169,8 +169,6 @@ public class DriverServiceImplTest {
     @Test
     public void addDriverOnTransport() {
         //Given
-        ArgumentCaptor<Connection> connectionArgumentCaptor = ArgumentCaptor.forClass(Connection.class);
-
         Driver testDriver = new Driver(1, "Name", "Surname", "03404040", DriverQualificationEnum.BUS_DRIVER);
         Transport testTransport = new Bus(1, "Mark", 40, DriverQualificationEnum.BUS_DRIVER, "Type", 4);
         boolean expectedResult = true;
